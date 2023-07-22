@@ -1,0 +1,9 @@
+{
+    "required": true,
+    "package": "dev.plasticstraw.inf_music.mixin",
+    "compatibilityLevel": "JAVA_17",
+    "mixins": ["CancelMusicDelay"],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}
