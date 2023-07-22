@@ -6,7 +6,7 @@
     "description": "Removes the delay between music tracks.",
     "authors": ["PlasticStrawActivist"],
     "contact": {
-        "sources": "https://github.com/FabricMC/fabric-example-mod"
+        "sources": "https://github.com/PlasticStrawActivist/Infinite-music-mod"
     },
     "license": "CC0-1.0",
     "icon": "assets/inf_music/icon.png",
