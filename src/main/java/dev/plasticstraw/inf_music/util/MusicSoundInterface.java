@@ -2,8 +2,12 @@ package dev.plasticstraw.inf_music.util;
 
 public interface MusicSoundInterface {
 
-    public void updateMusicDelays(int minDelay, int maxDelay, boolean enabled);
+    default public void updateMusicDelays(int minDelay, int maxDelay, boolean enabled) {
+        return;
+    }
 
-    public boolean enabled();
+    default public boolean enabled() {
+        return true;
+    };
 
 }
