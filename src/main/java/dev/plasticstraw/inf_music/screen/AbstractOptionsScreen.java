@@ -33,11 +33,16 @@ public abstract class AbstractOptionsScreen extends GameOptionsScreen {
         this.initWidgets();
 
         this.addSelectableChild(optionButtons);
-        this.addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, button -> {
-            InfiniteMusic.CONFIG.write();
-            InfiniteMusic.updateMusicDelays();
-            this.client.setScreen(this.parent);
-        }).dimensions(this.width / 2 - 100, this.height - 27, 200, 20).build());
+        this.addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, button -> this.close())
+                .dimensions(this.width / 2 - 100, this.height - 27, 200, 20).build());
+    }
+
+    @Override
+    public void close() {
+        InfiniteMusic.LOGGER.info("closed");
+        InfiniteMusic.CONFIG.write();
+        InfiniteMusic.updateMusicDelays();
+        this.client.setScreen(this.parent);
     }
 
     @Override
