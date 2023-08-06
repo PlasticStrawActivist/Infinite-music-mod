@@ -39,7 +39,6 @@ public abstract class AbstractOptionsScreen extends GameOptionsScreen {
 
     @Override
     public void close() {
-        InfiniteMusic.LOGGER.info("closed");
         InfiniteMusic.CONFIG.write();
         InfiniteMusic.updateMusicDelays();
         this.client.setScreen(this.parent);
