@@ -7,19 +7,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.MusicTracker;
-import net.minecraft.client.sound.MusicType;
 import net.minecraft.sound.MusicSound;
 
 @Mixin(MusicTracker.class)
 public class DisableMusic {
 
-    @Inject(method = "Lnet/minecraft/client/sound/MusicTracker;tick()V", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "Lnet/minecraft/client/sound/MusicTracker;tick()V", at = @At("HEAD"),
+            cancellable = true)
     private void disable(CallbackInfo ci) {
         MinecraftClient client = MinecraftClient.getInstance();
         MusicSound musicSound = client.getMusicType();
 
-        if (!musicSound.enabled() && (musicSound == MusicType.MENU || musicSound == MusicType.CREATIVE
-                || musicSound == MusicType.GAME || musicSound == MusicType.UNDERWATER || musicSound == MusicType.END)) {
+        if (!musicSound.enabled()) {
             ci.cancel();
         }
     }
