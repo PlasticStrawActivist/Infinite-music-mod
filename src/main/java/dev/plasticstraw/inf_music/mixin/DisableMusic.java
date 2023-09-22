@@ -35,18 +35,12 @@ public class DisableMusic {
             at = @At(value = "INVOKE",
                     target = "Lnet/minecraft/client/sound/SoundManager;play(Lnet/minecraft/client/sound/SoundInstance;)V"))
     private void pauseForMusicMusic(SoundManager soundManager, SoundInstance sound) {
-        MinecraftClient client = MinecraftClient.getInstance();
-
-        if (InfiniteMusic.CONFIG.pauseForDiscMusic) {
-            // TODO: make this more efficient so its not called very tick
-            String debugString = client.getSoundManager().getDebugString();
-            if (debugString.charAt(debugString.length() - 3) != '0') {
-                return;
-            }
+        if (InfiniteMusic.CONFIG.pauseForDiscMusic && InfiniteMusic.isMusicDiscMusicPlaying()) {
+            return;
         }
 
         InfiniteMusic.musicInstance = this.current;
         soundManager.play(sound);
     }
-    
+
 }

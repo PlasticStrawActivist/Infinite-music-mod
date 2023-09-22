@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import dev.plasticstraw.inf_music.config.InfiniteMusicConfig;
 import dev.plasticstraw.inf_music.config.InfiniteMusicConfig.MusicOptions;
 import net.fabricmc.api.ClientModInitializer;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.MusicType;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.sound.MusicSound;
@@ -18,6 +19,7 @@ public class InfiniteMusic implements ClientModInitializer {
     public static final InfiniteMusicConfig CONFIG = InfiniteMusicConfig.load();
 
     private static final List<MusicSound> gameplayMusic = new ArrayList<MusicSound>();
+    public static final List<SoundInstance> musicDiscInstanceList = new ArrayList<SoundInstance>();
     public static SoundInstance musicInstance;
 
     @Override
@@ -41,6 +43,22 @@ public class InfiniteMusic implements ClientModInitializer {
                 updateMusicDelay(musicSound, CONFIG.gameplayMusic);
             }
         }
+    }
+
+    public static boolean isMusicDiscMusicPlaying() {
+        for (SoundInstance soundInstance : new ArrayList<SoundInstance>(musicDiscInstanceList)) {
+            if (MinecraftClient.getInstance().getSoundManager().isPlaying(soundInstance)) {
+                return true;
+            }
+
+            musicDiscInstanceList.remove(soundInstance);
+        }
+
+        if (musicDiscInstanceList.size() == 0) {
+            return false;
+        }
+
+        return true;
     }
 
     private static void updateMusicDelay(MusicSound musicSound, MusicOptions config) {

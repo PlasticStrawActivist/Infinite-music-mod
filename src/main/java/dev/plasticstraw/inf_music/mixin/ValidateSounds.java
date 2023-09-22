@@ -16,16 +16,19 @@ public class ValidateSounds {
 
     @Inject(method = "Lnet/minecraft/client/sound/SoundManager;play(Lnet/minecraft/client/sound/SoundInstance;)V",
             at = @At("HEAD"), cancellable = true)
-    private void validateSounds(SoundInstance sound, CallbackInfo ci) {
-        if (!canceledStartMusic && sound.getId().getPath() == "music.menu") {
+    private void validateSounds(SoundInstance soundInstance, CallbackInfo ci) {
+        if (!canceledStartMusic && soundInstance.getId().getPath() == "music.menu") {
             canceledStartMusic = true;
             ci.cancel();
         }
 
-        if (InfiniteMusic.CONFIG.pauseForDiscMusic
-                && sound.getId().getPath().startsWith("music_disc.")) {
-            MinecraftClient.getInstance().getSoundManager().stop(InfiniteMusic.musicInstance);
+        if (soundInstance.getId().getPath().startsWith("music_disc.")) {
+            InfiniteMusic.musicDiscInstanceList.add(soundInstance);
+
+            if (InfiniteMusic.CONFIG.pauseForDiscMusic) {
+                MinecraftClient.getInstance().getSoundManager().stop(InfiniteMusic.musicInstance);
+            }
         }
     }
-    
+
 }
