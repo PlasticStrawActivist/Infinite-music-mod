@@ -12,16 +12,9 @@ import net.minecraft.client.sound.SoundManager;
 @Mixin(SoundManager.class)
 public class ValidateSounds {
 
-    private boolean canceledStartMusic = false;
-
     @Inject(method = "Lnet/minecraft/client/sound/SoundManager;play(Lnet/minecraft/client/sound/SoundInstance;)V",
             at = @At("HEAD"), cancellable = true)
     private void validateSounds(SoundInstance soundInstance, CallbackInfo ci) {
-        if (!canceledStartMusic && soundInstance.getId().getPath() == "music.menu") {
-            canceledStartMusic = true;
-            ci.cancel();
-        }
-
         if (soundInstance.getId().getPath().startsWith("music_disc.")) {
             InfiniteMusic.musicDiscInstanceList.add(soundInstance);
 

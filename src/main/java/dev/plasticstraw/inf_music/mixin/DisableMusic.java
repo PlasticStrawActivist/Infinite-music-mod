@@ -30,6 +30,12 @@ public class DisableMusic {
         }
     }
 
+    @Redirect(method = "Lnet/minecraft/client/sound/MusicTracker;tick()V",
+            at = @At(value = "INVOKE", target = "Ljava/lang/Math;min(II)I", ordinal = 0))
+    private int resetTimeUntilNextSong(int arg1, int arg2) {
+        return arg2;
+    }
+
     @Redirect(
             method = "Lnet/minecraft/client/sound/MusicTracker;play(Lnet/minecraft/sound/MusicSound;)V",
             at = @At(value = "INVOKE",
