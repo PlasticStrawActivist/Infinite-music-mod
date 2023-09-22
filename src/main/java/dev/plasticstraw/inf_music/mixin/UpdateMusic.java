@@ -14,7 +14,6 @@ public class UpdateMusic {
     @Inject(method = "Lnet/minecraft/client/MinecraftClient;joinWorld(Lnet/minecraft/client/world/ClientWorld;)V",
             at = @At("HEAD"), cancellable = true)
     private void updateMusicOnWorldJoin(ClientWorld world, CallbackInfo ci) {
-        InfiniteMusic.LOGGER.info("updated");
         InfiniteMusic.updateMusicDelays();
     }
 }

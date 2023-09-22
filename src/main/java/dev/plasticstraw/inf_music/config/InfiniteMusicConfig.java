@@ -14,17 +14,17 @@ import net.fabricmc.loader.api.FabricLoader;
 public class InfiniteMusicConfig {
 
     private static final String CONFIG_FILE_NAME = "infinite-music-options.json";
-    private static final Gson json = new GsonBuilder()
-            .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-            .setPrettyPrinting()
-            .excludeFieldsWithModifiers(Modifier.PRIVATE)
-            .create();
+    private static final Gson json =
+            new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                    .setPrettyPrinting().excludeFieldsWithModifiers(Modifier.PRIVATE).create();
 
     public final MainMenuMusic mainMenuMusic = new MainMenuMusic();
     public final GameplayMusic gameplayMusic = new GameplayMusic();
     public final GameplayMusic creativeMusic = new GameplayMusic();
     public final GameplayMusic underwaterMusic = new GameplayMusic();
     public final EndMusic endMusic = new EndMusic();
+    public boolean pauseForDiscMusic = true;
+    public boolean enableSoundOptionsButton = true;
 
     public static class MainMenuMusic extends MusicOptions {
 

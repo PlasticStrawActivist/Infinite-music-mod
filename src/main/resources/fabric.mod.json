@@ -31,8 +31,7 @@
     "accessWidener": "inf_music.accesswidener",
     "custom": {
         "loom:injected_interfaces": {
-            "net/minecraft/class_5195": ["dev/plasticstraw/inf_music/util/MusicSoundInterface"],
-            "net/minecraft/class_1143": ["dev/plasticstraw/inf_music/util/MusicTypeInterface"]
+            "net/minecraft/class_5195": ["dev/plasticstraw/inf_music/util/MusicSoundInterface"]
         }
     }
 }

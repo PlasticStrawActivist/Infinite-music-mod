@@ -9,6 +9,7 @@ import dev.plasticstraw.inf_music.config.InfiniteMusicConfig;
 import dev.plasticstraw.inf_music.config.InfiniteMusicConfig.MusicOptions;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.sound.MusicType;
+import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.sound.MusicSound;
 
 public class InfiniteMusic implements ClientModInitializer {
@@ -17,6 +18,7 @@ public class InfiniteMusic implements ClientModInitializer {
     public static final InfiniteMusicConfig CONFIG = InfiniteMusicConfig.load();
 
     private static final List<MusicSound> gameplayMusic = new ArrayList<MusicSound>();
+    public static SoundInstance musicInstance;
 
     @Override
     public void onInitializeClient() {

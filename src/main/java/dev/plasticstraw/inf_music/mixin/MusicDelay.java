@@ -50,5 +50,4 @@ public class MusicDelay implements MusicSoundInterface {
     public boolean enabled() {
         return this.enabled;
     }
-
 }
