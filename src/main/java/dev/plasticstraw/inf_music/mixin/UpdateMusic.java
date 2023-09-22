@@ -16,4 +16,5 @@ public class UpdateMusic {
     private void updateMusicOnWorldJoin(ClientWorld world, CallbackInfo ci) {
         InfiniteMusic.updateMusicDelays();
     }
+    
 }

@@ -27,4 +27,5 @@ public class ValidateSounds {
             MinecraftClient.getInstance().getSoundManager().stop(InfiniteMusic.musicInstance);
         }
     }
+    
 }

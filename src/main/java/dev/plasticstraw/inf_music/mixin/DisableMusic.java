@@ -48,4 +48,5 @@ public class DisableMusic {
         InfiniteMusic.musicInstance = this.current;
         soundManager.play(sound);
     }
+    
 }
