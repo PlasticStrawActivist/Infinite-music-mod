@@ -26,13 +26,12 @@ public abstract class AbstractOptionsScreen extends GameOptionsScreen {
         this.optionButtons = new OptionListWidget(
                 this.client,
                 this.width,
-                this.height,
+                this.height - 64,
                 32,
-                this.height - 32,
                 25);
         this.initWidgets();
 
-        this.addSelectableChild(optionButtons);
+        this.addDrawableChild(optionButtons);
         this.addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, button -> this.close())
                 .dimensions(this.width / 2 - 100, this.height - 27, 200, 20).build());
     }
@@ -46,7 +45,8 @@ public abstract class AbstractOptionsScreen extends GameOptionsScreen {
 
     @Override
     public final void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        this.render(context, this.optionButtons, mouseX, mouseY, delta);
+        super.render(context, mouseX, mouseY, delta);
+        context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 20, 0xFFFFFF);
     }
 
 }

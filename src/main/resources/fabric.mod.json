@@ -1,7 +1,7 @@
 {
     "schemaVersion": 1,
     "id": "infinite-music",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "name": "Infinite Music",
     "description": "Removes the delay between music tracks.",
     "authors": ["PlasticStrawActivist"],
@@ -25,13 +25,15 @@
     ],
     "depends": {
         "fabricloader": ">=0.14.19",
-        "minecraft": ">=1.20",
+        "minecraft": ">=1.20.3",
         "java": ">=17"
     },
     "accessWidener": "inf_music.accesswidener",
     "custom": {
         "loom:injected_interfaces": {
-            "net/minecraft/class_5195": ["dev/plasticstraw/inf_music/util/MusicSoundInterface"]
+            "net/minecraft/class_5195": [
+                "dev/plasticstraw/inf_music/util/MusicSoundInterface"
+            ]
         }
     }
 }
