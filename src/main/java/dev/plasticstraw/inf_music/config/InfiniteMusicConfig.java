@@ -24,6 +24,7 @@ public class InfiniteMusicConfig {
     public final GameplayMusic underwaterMusic = new GameplayMusic();
     public final EndMusic endMusic = new EndMusic();
     public boolean pauseForDiscMusic = true;
+    public boolean playMusicImmediately = false;
     public boolean enableSoundOptionsButton = true;
 
     public static class MainMenuMusic extends MusicOptions {

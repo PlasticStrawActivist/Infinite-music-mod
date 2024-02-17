@@ -41,11 +41,19 @@ public class InfiniteMusicOptions extends AbstractOptionsScreen {
                     InfiniteMusic.CONFIG.pauseForDiscMusic = value;
                 });
 
+        BooleanButton playMusicImmediatelyButton = new BooleanButton("inf_music.config.playMusicImmediately",
+                InfiniteMusic.CONFIG.pauseForDiscMusic, (value) -> {
+                    return value ? Text.translatable("inf_music.config.playMusicImmediately.enabled")
+                            : Text.translatable("inf_music.config.playMusicImmediately.disabled");
+                }, (value) -> {
+                    InfiniteMusic.CONFIG.pauseForDiscMusic = value;
+                });
+
 
         this.optionButtons.addAll(new SimpleOption[] {mainMenuMusicbutton.getSimpleOption(),
                 gameplayMusicbutton.getSimpleOption(), creativeMusicbutton.getSimpleOption(),
                 underwaterMusicbutton.getSimpleOption(), endMusicbutton.getSimpleOption(),
-                pauseForDiscMusicButton.getSimpleOption()});
+                pauseForDiscMusicButton.getSimpleOption(), playMusicImmediatelyButton.getSimpleOption()});
     }
 
     private ClickableButton createMusicButton(String translationKey, MusicOptions musicOptions) {
