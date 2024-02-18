@@ -56,7 +56,7 @@ public class MusicDelayOptions extends AbstractOptionsScreen {
                 });
 
         this.disableMusicButton = new BooleanButton(
-                "inf_music.config.disableMusic",
+                "inf_music.config.disableMusic", null,
                 this.musicOptions.enabled,
                 (value) -> {
                     return value ? Text.translatable("inf_music.config.disableMusic.enabled")
