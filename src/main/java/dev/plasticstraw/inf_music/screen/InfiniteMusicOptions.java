@@ -49,13 +49,13 @@ public class InfiniteMusicOptions extends AbstractOptionsScreen {
                 });
 
         BooleanButton playMusicImmediatelyButton = new BooleanButton(
-                "inf_music.config.playMusicImmediately",
-                "inf_music.config.playMusicImmediately.tooltip",
+                "inf_music.config.playImmediately",
+                "inf_music.config.playImmediately.tooltip",
                 InfiniteMusic.CONFIG.playMusicImmediately, (value) -> {
                     return value ? Text
-                            .translatable("inf_music.config.playMusicImmediately.enabled")
+                            .translatable("inf_music.config.playImmediately.enabled")
                             : Text.translatable(
-                                    "inf_music.config.playMusicImmediately.enabled");
+                                    "inf_music.config.playImmediately.enabled");
                 }, (value) -> {
                     InfiniteMusic.CONFIG.playMusicImmediately = value;
                 });
