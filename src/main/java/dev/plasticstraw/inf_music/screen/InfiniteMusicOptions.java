@@ -30,8 +30,8 @@ public class InfiniteMusicOptions extends AbstractOptionsScreen {
         ClickableButton underwaterMusicbutton = this.createMusicButton(
                 "inf_music.config.delay.underwater", InfiniteMusic.CONFIG.underwaterMusic);
 
-        ClickableButton endMusicbutton =
-                this.createMusicButton("inf_music.config.delay.end", InfiniteMusic.CONFIG.endMusic);
+        ClickableButton endMusicbutton = this.createMusicButton("inf_music.config.delay.end",
+                InfiniteMusic.CONFIG.endMusic);
 
         BooleanButton pauseForDiscMusicButton = new BooleanButton("inf_music.config.pauseMusic",
                 InfiniteMusic.CONFIG.pauseForDiscMusic, (value) -> {
@@ -42,18 +42,17 @@ public class InfiniteMusicOptions extends AbstractOptionsScreen {
                 });
 
         BooleanButton playMusicImmediatelyButton = new BooleanButton("inf_music.config.playMusicImmediately",
-                InfiniteMusic.CONFIG.pauseForDiscMusic, (value) -> {
+                InfiniteMusic.CONFIG.playMusicImmediately, (value) -> {
                     return value ? Text.translatable("inf_music.config.playMusicImmediately.enabled")
-                            : Text.translatable("inf_music.config.playMusicImmediately.disabled");
+                            : Text.translatable("inf_music.config.playMusicImmediately.enabled");
                 }, (value) -> {
-                    InfiniteMusic.CONFIG.pauseForDiscMusic = value;
+                    InfiniteMusic.CONFIG.playMusicImmediately = value;
                 });
 
-
-        this.optionButtons.addAll(new SimpleOption[] {mainMenuMusicbutton.getSimpleOption(),
+        this.optionButtons.addAll(new SimpleOption[] { mainMenuMusicbutton.getSimpleOption(),
                 gameplayMusicbutton.getSimpleOption(), creativeMusicbutton.getSimpleOption(),
                 underwaterMusicbutton.getSimpleOption(), endMusicbutton.getSimpleOption(),
-                pauseForDiscMusicButton.getSimpleOption(), playMusicImmediatelyButton.getSimpleOption()});
+                pauseForDiscMusicButton.getSimpleOption(), playMusicImmediatelyButton.getSimpleOption() });
     }
 
     private ClickableButton createMusicButton(String translationKey, MusicOptions musicOptions) {
