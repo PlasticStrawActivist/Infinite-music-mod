@@ -90,10 +90,8 @@ public class InfiniteMusic implements ClientModInitializer {
 
             if (hasJoinedWorld && !musicSound.equals(MusicType.MENU)) {
                 hasJoinedWorld = false;
-                LOGGER.info("test1");
 
                 if (CONFIG.playMusicImmediately) {
-                    LOGGER.info("test2");
                     play(musicSound);
                     return;
                 }
