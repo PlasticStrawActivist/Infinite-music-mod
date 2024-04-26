@@ -17,24 +17,24 @@ public class InfiniteMusicOptions extends AbstractOptionsScreen {
     }
 
     @Override
-    public void initWidgets() {
-        ClickableButton mainMenuMusicbutton = this.createMusicButton(
+    public SimpleOption<?>[] getWidgets() {
+        ClickableButton mainMenuMusicbutton = createMusicButton(
                 "inf_music.config.delay.menu",
                 InfiniteMusic.CONFIG.mainMenuMusic);
 
-        ClickableButton gameplayMusicbutton = this.createMusicButton(
+        ClickableButton gameplayMusicbutton = createMusicButton(
                 "inf_music.config.delay.gameplay",
                 InfiniteMusic.CONFIG.gameplayMusic);
 
-        ClickableButton creativeMusicbutton = this.createMusicButton(
+        ClickableButton creativeMusicbutton = createMusicButton(
                 "inf_music.config.delay.creative",
                 InfiniteMusic.CONFIG.creativeMusic);
 
-        ClickableButton underwaterMusicbutton = this.createMusicButton(
+        ClickableButton underwaterMusicbutton = createMusicButton(
                 "inf_music.config.delay.underwater",
                 InfiniteMusic.CONFIG.underwaterMusic);
 
-        ClickableButton endMusicbutton = this.createMusicButton(
+        ClickableButton endMusicbutton = createMusicButton(
                 "inf_music.config.delay.end",
                 InfiniteMusic.CONFIG.endMusic);
 
@@ -60,15 +60,15 @@ public class InfiniteMusicOptions extends AbstractOptionsScreen {
                     InfiniteMusic.CONFIG.playMusicImmediately = value;
                 });
 
-        this.optionButtons.addAll(new SimpleOption[] { mainMenuMusicbutton.getSimpleOption(),
+        return new SimpleOption[] { mainMenuMusicbutton.getSimpleOption(),
                 gameplayMusicbutton.getSimpleOption(), creativeMusicbutton.getSimpleOption(),
                 underwaterMusicbutton.getSimpleOption(), endMusicbutton.getSimpleOption(),
                 pauseForDiscMusicButton.getSimpleOption(),
-                playMusicImmediatelyButton.getSimpleOption() });
+                playMusicImmediatelyButton.getSimpleOption() };
     }
 
     private ClickableButton createMusicButton(String translationKey, MusicOptions musicOptions) {
-        return new ClickableButton(translationKey, () -> this.client
+        return new ClickableButton(translationKey, () -> client
                 .setScreen(new MusicDelayOptions(this, translationKey, musicOptions)));
     }
 

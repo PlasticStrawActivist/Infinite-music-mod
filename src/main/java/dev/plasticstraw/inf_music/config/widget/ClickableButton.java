@@ -20,7 +20,7 @@ public class ClickableButton implements SimpleOptionWidget<Boolean> {
     private final Runnable onPress;
 
     public ClickableButton(String translationKey, Runnable onPress) {
-        this.simpleOption = new SimpleOption<Boolean>(
+        simpleOption = new SimpleOption<Boolean>(
                 translationKey,
                 SimpleOption.emptyTooltip(),
                 new TextGetter(),
@@ -34,7 +34,7 @@ public class ClickableButton implements SimpleOptionWidget<Boolean> {
 
     @Override
     public SimpleOption<Boolean> getSimpleOption() {
-        return this.simpleOption;
+        return simpleOption;
     }
 
     private class TextGetter implements ValueTextGetter<Boolean> {

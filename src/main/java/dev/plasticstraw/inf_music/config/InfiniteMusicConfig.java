@@ -14,9 +14,9 @@ import net.fabricmc.loader.api.FabricLoader;
 public class InfiniteMusicConfig {
 
     private static final String CONFIG_FILE_NAME = "infinite-music-options.json";
-    private static final Gson json =
-            new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                    .setPrettyPrinting().excludeFieldsWithModifiers(Modifier.PRIVATE).create();
+    private static final Gson json = new GsonBuilder()
+            .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+            .setPrettyPrinting().excludeFieldsWithModifiers(Modifier.PRIVATE).create();
 
     public final MainMenuMusic mainMenuMusic = new MainMenuMusic();
     public final GameplayMusic gameplayMusic = new GameplayMusic();
@@ -81,7 +81,7 @@ public class InfiniteMusicConfig {
         public int randomness = 0;
 
         public int getMinTicks() {
-            return Math.max(this.delay - this.randomness, 0) * 20;
+            return Math.max(delay - randomness, 0) * 20;
         }
 
         public int getMaxTicks() {

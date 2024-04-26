@@ -1,52 +1,56 @@
 package dev.plasticstraw.inf_music.screen;
 
+import org.jetbrains.annotations.Nullable;
+
 import dev.plasticstraw.inf_music.InfiniteMusic;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.GameOptionsScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.OptionListWidget;
-import net.minecraft.screen.ScreenTexts;
+import net.minecraft.client.option.SimpleOption;
 import net.minecraft.text.Text;
 
 public abstract class AbstractOptionsScreen extends GameOptionsScreen {
 
+    @Nullable
+    private ClickableWidget narratorButton;
     protected OptionListWidget optionButtons;
 
     @SuppressWarnings("resource")
-    public AbstractOptionsScreen(Screen parent, String translatbleKey) {
-        super(parent, MinecraftClient.getInstance().options, Text.translatable(translatbleKey));
+    public AbstractOptionsScreen(Screen parent, String translatableKey) {
+        super(parent, MinecraftClient.getInstance().options, Text.translatable(translatableKey));
     }
 
-    protected abstract void initWidgets();
+    protected abstract SimpleOption<?>[] getWidgets();
+
+    protected void initScreen() {
+        return;
+    }
 
     @Override
-    public final void init() {
-        this.optionButtons = new OptionListWidget(
-                this.client,
-                this.width,
-                this.height - 64,
-                32,
-                25);
-        this.initWidgets();
-
-        this.addDrawableChild(optionButtons);
-        this.addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, button -> this.close())
-                .dimensions(this.width / 2 - 100, this.height - 27, 200, 20).build());
+    protected final void init() {
+        optionButtons = addDrawableChild(new OptionListWidget(client, width, height, this));
+        optionButtons.addAll(getWidgets());
+        initScreen();
+        narratorButton = optionButtons.getWidgetFor(gameOptions.getNarrator());
+        if (narratorButton != null) {
+            narratorButton.active = client.getNarratorManager().isActive();
+        }
+        super.init();
     }
 
     @Override
     public void close() {
         InfiniteMusic.CONFIG.write();
         InfiniteMusic.updateMusicDelays();
-        this.client.setScreen(this.parent);
+        client.setScreen(parent);
     }
 
     @Override
-    public final void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
-        context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 20, 0xFFFFFF);
+    protected void initTabNavigation() {
+        super.initTabNavigation();
+        optionButtons.position(this.width, this.layout);
     }
 
 }

@@ -19,7 +19,7 @@ public class BooleanButton implements SimpleOptionWidget<Boolean> {
             Boolean initialValue,
             Function<Boolean, Text> textCallback,
             Consumer<Boolean> callback) {
-        this.simpleOption = SimpleOption.ofBoolean(
+        simpleOption = SimpleOption.ofBoolean(
                 translationKey,
                 getTooltip(tooltipTranslationKey),
                 (optionText, value) -> textCallback.apply(value),
@@ -28,7 +28,7 @@ public class BooleanButton implements SimpleOptionWidget<Boolean> {
     }
 
     public SimpleOption<Boolean> getSimpleOption() {
-        return this.simpleOption;
+        return simpleOption;
     }
 
     private static TooltipFactory<Boolean> getTooltip(@Nullable String tooltipTranslationKey) {

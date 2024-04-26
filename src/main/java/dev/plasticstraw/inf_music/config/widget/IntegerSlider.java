@@ -16,7 +16,7 @@ public class IntegerSlider implements SimpleOptionWidget<Integer> {
             int initialValue,
             Function<Integer, Text> textCallback,
             Consumer<Integer> callback) {
-        this.simpleOption = new SimpleOption<Integer>(
+        simpleOption = new SimpleOption<Integer>(
                 translationString,
                 SimpleOption.emptyTooltip(),
                 (optionText, value) -> Text.translatable(
@@ -29,7 +29,7 @@ public class IntegerSlider implements SimpleOptionWidget<Integer> {
     }
 
     public SimpleOption<Integer> getSimpleOption() {
-        return this.simpleOption;
+        return simpleOption;
     }
 
 }

@@ -22,7 +22,7 @@ public class PresetButton implements SimpleOptionWidget<Boolean> {
     private String valueTranslationKey;
 
     public PresetButton(String translationKey, String valueTranslationKey, Runnable onPress) {
-        this.simpleOption = new SimpleOption<Boolean>(
+        simpleOption = new SimpleOption<Boolean>(
                 translationKey,
                 SimpleOption.emptyTooltip(),
                 new TextGetter(),
@@ -34,13 +34,13 @@ public class PresetButton implements SimpleOptionWidget<Boolean> {
 
     @Override
     public SimpleOption<Boolean> getSimpleOption() {
-        return this.simpleOption;
+        return simpleOption;
     }
 
     public void setValueTranslationKey(String valueTranslationKey) {
-        if (this.widget != null) {
+        if (widget != null) {
             this.valueTranslationKey = valueTranslationKey;
-            this.widget.setMessage(this.simpleOption.textGetter.apply(true));
+            widget.setMessage(simpleOption.textGetter.apply(true));
         }
     }
 

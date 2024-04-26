@@ -27,89 +27,92 @@ public class MusicDelayOptions extends AbstractOptionsScreen {
         this.musicOptions = musicOptions;
 
         if (musicOptions.usesMinutes()) {
-            this.maxIntValue = 15;
-            this.secondsStep = 60;
-            this.valueTranslationKey = "minute";
+            maxIntValue = 15;
+            secondsStep = 60;
+            valueTranslationKey = "minute";
         } else {
-            this.maxIntValue = 120;
-            this.secondsStep = 1;
-            this.valueTranslationKey = "second";
+            maxIntValue = 120;
+            secondsStep = 1;
+            valueTranslationKey = "second";
         }
     }
 
     @Override
-    protected void initWidgets() {
-        this.presetButton = new PresetButton(
+    protected SimpleOption<?>[] getWidgets() {
+        presetButton = new PresetButton(
                 "inf_music.config.delayPreset",
-                this.getPresetTranslationKey(this.musicOptions.delay, this.musicOptions.randomness),
+                getPresetTranslationKey(musicOptions.delay, musicOptions.randomness),
                 () -> {
-                    if (this.musicOptions.delay == 0 && this.musicOptions.randomness == 0) {
-                        this.delaySlider.getSimpleOption()
-                                .setValue(this.musicOptions.getDefaultDelay() / this.secondsStep);
-                        this.randomnessSlider.getSimpleOption().setValue(
-                                this.musicOptions.getDefaultRandomness() / this.secondsStep);
+                    if (musicOptions.delay == 0 && musicOptions.randomness == 0) {
+                        delaySlider.getSimpleOption()
+                                .setValue(musicOptions.getDefaultDelay() / secondsStep);
+                        randomnessSlider.getSimpleOption().setValue(
+                                musicOptions.getDefaultRandomness() / secondsStep);
                     } else {
-                        this.delaySlider.getSimpleOption().setValue(0);
-                        this.randomnessSlider.getSimpleOption().setValue(0);
+                        delaySlider.getSimpleOption().setValue(0);
+                        randomnessSlider.getSimpleOption().setValue(0);
                     }
-                    this.clearAndInit();
+                    clearAndInit();
                 });
 
-        this.disableMusicButton = new BooleanButton(
+        disableMusicButton = new BooleanButton(
                 "inf_music.config.disableMusic", null,
-                this.musicOptions.enabled,
+                musicOptions.enabled,
                 (value) -> {
                     return value ? Text.translatable("inf_music.config.disableMusic.enabled")
                             : Text.translatable("inf_music.config.disableMusic.disabled");
                 },
                 (value) -> {
-                    this.musicOptions.enabled = value;
+                    musicOptions.enabled = value;
                 });
 
-        this.delaySlider = new IntegerSlider(
-                "inf_music.config.delay", 0, this.maxIntValue,
-                this.musicOptions.delay / this.secondsStep, (value) -> {
-                    return this.getValueText(value * this.secondsStep);
+        delaySlider = new IntegerSlider(
+                "inf_music.config.delay", 0, maxIntValue,
+                musicOptions.delay / secondsStep, (value) -> {
+                    return getValueText(value * secondsStep);
                 },
                 (value) -> {
-                    int seconds = value * this.secondsStep;
-                    this.presetButton.setValueTranslationKey(
-                            this.getPresetTranslationKey(seconds, this.musicOptions.randomness));
-                    this.musicOptions.delay = seconds;
-                    this.updateContextTextWidget();
+                    int seconds = value * secondsStep;
+                    presetButton.setValueTranslationKey(
+                            getPresetTranslationKey(seconds, musicOptions.randomness));
+                    musicOptions.delay = seconds;
+                    updateContextTextWidget();
                 });
 
-        this.randomnessSlider = new IntegerSlider(
+        randomnessSlider = new IntegerSlider(
                 "inf_music.config.randomness",
                 0,
-                this.maxIntValue,
-                this.musicOptions.randomness / this.secondsStep,
+                maxIntValue,
+                musicOptions.randomness / secondsStep,
                 (value) -> {
                     if (value == 0) {
                         return Text.translatable("inf_music.config.randomness.none");
                     }
-                    return this.getValueText(value * this.secondsStep);
+                    return getValueText(value * secondsStep);
                 },
                 (value) -> {
-                    int seconds = value * this.secondsStep;
-                    this.presetButton.setValueTranslationKey(
-                            this.getPresetTranslationKey(this.musicOptions.delay, seconds));
-                    this.musicOptions.randomness = seconds;
-                    this.updateContextTextWidget();
+                    int seconds = value * secondsStep;
+                    presetButton.setValueTranslationKey(
+                            getPresetTranslationKey(musicOptions.delay, seconds));
+                    musicOptions.randomness = seconds;
+                    updateContextTextWidget();
                 });
 
-        this.optionButtons.addAll(new SimpleOption<?>[] {
-                this.presetButton.getSimpleOption(),
-                this.disableMusicButton.getSimpleOption(),
-                this.delaySlider.getSimpleOption(),
-                this.randomnessSlider.getSimpleOption() });
+        return new SimpleOption<?>[] {
+                presetButton.getSimpleOption(),
+                disableMusicButton.getSimpleOption(),
+                delaySlider.getSimpleOption(),
+                randomnessSlider.getSimpleOption() };
 
-        this.contextTextWidget = this.addDrawableChild(new MultilineTextWidget(Text.empty(), this.textRenderer));
-        this.contextTextWidget.setMaxWidth(this.optionButtons.getRowWidth() - 50);
-        this.contextTextWidget.setCentered(true);
-        this.contextTextWidget.setY(40 + 2 * 24);
-        this.updateContextTextWidget();
+    }
 
+    @Override
+    protected void initScreen() {
+        contextTextWidget = addDrawableChild(new MultilineTextWidget(Text.empty(), textRenderer));
+        contextTextWidget.setMaxWidth(optionButtons.getRowWidth() - 50);
+        contextTextWidget.setCentered(true);
+        contextTextWidget.setY(40 + 2 * 24);
+        updateContextTextWidget();
     }
 
     private String getPresetTranslationKey(int delay, int randomness) {
@@ -117,7 +120,7 @@ public class MusicDelayOptions extends AbstractOptionsScreen {
             return "inf_music.config.delayPreset.none";
         }
 
-        if (delay == this.musicOptions.getDefaultDelay() && randomness == this.musicOptions.getDefaultRandomness()) {
+        if (delay == musicOptions.getDefaultDelay() && randomness == musicOptions.getDefaultRandomness()) {
             return "inf_music.config.delayPreset.default";
         }
 
@@ -125,24 +128,24 @@ public class MusicDelayOptions extends AbstractOptionsScreen {
     }
 
     private Text getValueText(int value) {
-        value /= this.secondsStep;
+        value /= secondsStep;
         return Text.translatable("inf_music." + valueTranslationKey + (value == 1 ? "" : "s"),
                 value);
     }
 
     private void updateContextTextWidget() {
         Text message;
-        if (this.musicOptions.randomness == 0) {
-            message = Text.translatable("inf_music.config.delayContext", this.getValueText(this.musicOptions.delay));
+        if (musicOptions.randomness == 0) {
+            message = Text.translatable("inf_music.config.delayContext", getValueText(musicOptions.delay));
         } else {
             message = Text.translatable(
                     "inf_music.config.delayContext.random",
-                    this.getValueText(Math.max(this.musicOptions.delay - this.musicOptions.randomness, 0)),
-                    this.getValueText(this.musicOptions.delay + this.musicOptions.randomness));
+                    getValueText(Math.max(musicOptions.delay - musicOptions.randomness, 0)),
+                    getValueText(musicOptions.delay + musicOptions.randomness));
         }
 
-        this.contextTextWidget.setMessage(message);
-        this.contextTextWidget.setX((this.width - contextTextWidget.getWidth()) / 2);
+        contextTextWidget.setMessage(message);
+        contextTextWidget.setX((width - contextTextWidget.getWidth()) / 2);
     }
 
 }
