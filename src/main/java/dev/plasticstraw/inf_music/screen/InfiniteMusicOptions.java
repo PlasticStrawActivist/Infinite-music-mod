@@ -55,7 +55,7 @@ public class InfiniteMusicOptions extends AbstractOptionsScreen {
                     return value ? Text
                             .translatable("inf_music.config.playImmediately.enabled")
                             : Text.translatable(
-                                    "inf_music.config.playImmediately.enabled");
+                                    "inf_music.config.playImmediately.disabled");
                 }, (value) -> {
                     InfiniteMusic.CONFIG.playMusicImmediately = value;
                 });

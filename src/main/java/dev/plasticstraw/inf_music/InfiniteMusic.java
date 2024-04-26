@@ -15,7 +15,6 @@ import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.sound.MusicSound;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 
 public class InfiniteMusic implements ClientModInitializer {
@@ -45,11 +44,17 @@ public class InfiniteMusic implements ClientModInitializer {
         updateMusicDelay(MusicType.END, CONFIG.endMusic);
 
         for (MusicSound musicSound : gameplayMusic) {
-            if (!(musicSound == MusicType.MENU || musicSound == MusicType.CREATIVE
-                    || musicSound == MusicType.UNDERWATER || musicSound == MusicType.END)) {
+            if (!(musicSound == MusicType.MENU
+                    || musicSound == MusicType.CREATIVE
+                    || musicSound == MusicType.UNDERWATER
+                    || musicSound == MusicType.END
+                    || musicSound == MusicType.DRAGON
+                    || musicSound == MusicType.CREDITS)) {
                 updateMusicDelay(musicSound, CONFIG.gameplayMusic);
             }
         }
+
+        TRACKER.shouldDoFullTick();
     }
 
     public static boolean isMusicDiscMusicPlaying() {
@@ -75,61 +80,141 @@ public class InfiniteMusic implements ClientModInitializer {
     public static class Tracker {
 
         @Nullable
-        private SoundInstance current;
+        private SoundInstance currentMusicPlaying;
         private final Random random = Random.create();
-        private int timeUntilNextSong = Integer.MAX_VALUE;
+        private float randomFloat = random.nextFloat();
+        private int timeSinceLastSong = -1;
         private boolean hasJoinedWorld = true;
+        private boolean readyToPlay = false;
+        private MusicSound musicSound;
+        @Nullable
+        private TickCondition evaluatedTickCondition;
 
         public void tick() {
+            musicSound = client.getMusicType();
+
+            if (evaluatedTickCondition == null || evaluatedTickCondition.musicSoundType != musicSound) {
+                evaluatedTickCondition = fullTick();
+            }
+
+            if (evaluatedTickCondition.tick()) {
+                evaluatedTickCondition = null;
+            }
+        }
+
+        public TickCondition fullTick() {
             MusicSound musicSound = client.getMusicType();
 
-            if (!musicSound.enabled()) {
+            if (!musicSound.enabled()) { // is music disabled?
                 stop(musicSound);
-                return;
+                return new TickCondition(musicSound);
+            }
+
+            if (musicSound.shouldReplaceCurrentMusic() && !isPlayingType(musicSound)) {
+                // should music start immediately and is not playing self?
+                // the skip next condition
+            }
+
+            else if (currentMusicPlaying != null) { // is waiting for music to finish?
+                return new TickCondition(musicSound) {
+
+                    public boolean tick() {
+                        if (client.getSoundManager().isPlaying(currentMusicPlaying)) {
+                            return false;
+                        }
+
+                        currentMusicPlaying = null;
+                        return true;
+                    }
+
+                };
             }
 
             if (hasJoinedWorld && !musicSound.equals(MusicType.MENU)) {
                 hasJoinedWorld = false;
 
                 if (CONFIG.playMusicImmediately) {
-                    play(musicSound);
-                    return;
+                    readyToPlay = true;
                 }
             }
 
-            if (current != null) {
-                if (!(client.getSoundManager().isPlaying(current) || isDiscMusicBlocking())) {
-                    current = null;
-                    timeUntilNextSong = MathHelper.nextInt(random, musicSound.getMinDelay(), musicSound.getMaxDelay());
-                }
-
-                if (!isPlayingType(musicSound) && musicSound.shouldReplaceCurrentMusic()) {
-                    stop();
-                    timeUntilNextSong = MathHelper.nextInt(random, 0, musicSound.getMinDelay() / 2);
-                }
+            if (musicSound.getMinDelay() == 0 && musicSound.getMaxDelay() == 0) {
+                readyToPlay = true;
             }
 
-            if (current == null) {
-                timeUntilNextSong = Math.min(timeUntilNextSong, musicSound.getMaxDelay());
-                if (timeUntilNextSong-- <= 0) {
-                    play(musicSound);
-                }
+            if (readyToPlay) {
+                return new TickCondition(musicSound) {
+                    public boolean tick() {
+                        if (isDiscMusicBlocking()) {
+                            return false;
+                        }
+
+                        stop();
+                        play(musicSound);
+                        return true;
+                    }
+                };
             }
+
+            return new TickCondition(musicSound) {
+
+                private final int musicDelay;
+
+                {
+                    musicDelay = Math.round(randomFloat * (musicSound.getMaxDelay() - musicSound.getMinDelay()))
+                            + musicSound.getMinDelay();
+                }
+
+                public boolean tick() {
+                    timeSinceLastSong++;
+
+                    if (timeSinceLastSong < musicDelay) {
+                        return false;
+                    }
+
+                    if (isDiscMusicBlocking()) {
+                        readyToPlay = true;
+                    } else {
+                        stop();
+                        play(musicSound);
+                    }
+
+                    return true;
+                }
+
+            };
+        }
+
+        private class TickCondition {
+
+            public final MusicSound musicSoundType;
+
+            TickCondition(MusicSound musicSoundType) {
+                this.musicSoundType = musicSoundType;
+            }
+
+            public boolean tick() {
+                return false;
+            }
+
         }
 
         public void play(MusicSound type) {
-            if (type.getSound() == SoundManager.MISSING_SOUND) {
-                this.timeUntilNextSong = Integer.MAX_VALUE;
-                return;
-            }
-
             if (isDiscMusicBlocking()) {
                 return;
             }
 
-            current = PositionedSoundInstance.music(type.getSound().value());
-            InfiniteMusic.musicInstance = current;
-            client.getSoundManager().play(current);
+            if (type.getSound() == SoundManager.MISSING_SOUND) {
+                timeSinceLastSong = Integer.MIN_VALUE;
+                return;
+            }
+
+            readyToPlay = false;
+            timeSinceLastSong = -1;
+            randomFloat = random.nextFloat();
+            currentMusicPlaying = PositionedSoundInstance.music(type.getSound().value());
+            InfiniteMusic.musicInstance = currentMusicPlaying;
+            client.getSoundManager().play(currentMusicPlaying);
         }
 
         public void stop(MusicSound type) {
@@ -139,22 +224,25 @@ public class InfiniteMusic implements ClientModInitializer {
         }
 
         public void stop() {
-            if (current == null) {
-                // add 100??
+            if (currentMusicPlaying == null) {
                 return;
             }
-            client.getSoundManager().stop(current);
+            client.getSoundManager().stop(currentMusicPlaying);
         }
 
         public boolean isPlayingType(MusicSound musicSound) {
-            if (current == null) {
+            if (currentMusicPlaying == null) {
                 return false;
             }
-            return musicSound.getSound().value().getId().equals(current.getId());
+            return musicSound.getSound().value().getId().equals(currentMusicPlaying.getId());
         }
 
         public void hasJoinedWorld() {
             hasJoinedWorld = true;
+        }
+
+        public void shouldDoFullTick() {
+            evaluatedTickCondition = null;
         }
 
         private boolean isDiscMusicBlocking() {

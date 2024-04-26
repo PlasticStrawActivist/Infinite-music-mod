@@ -19,7 +19,7 @@ public class MusicDelay implements MusicSoundInterface {
     private int customMinDelay;
     private int customMaxDelay;
 
-    private boolean enabled;
+    private boolean enabled = true;
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void addGameplayMusic(RegistryEntry<SoundEvent> sound, int minDelay, int maxDelay,
@@ -27,14 +27,12 @@ public class MusicDelay implements MusicSoundInterface {
         InfiniteMusic.addGameplayMusic((MusicSound) (Object) this);
     }
 
-    @Inject(method = "Lnet/minecraft/sound/MusicSound;getMinDelay()I", at = @At("HEAD"),
-            cancellable = true)
+    @Inject(method = "Lnet/minecraft/sound/MusicSound;getMinDelay()I", at = @At("HEAD"), cancellable = true)
     private void getMinDelay(CallbackInfoReturnable<Integer> cir) {
         cir.setReturnValue(this.customMinDelay);
     }
 
-    @Inject(method = "Lnet/minecraft/sound/MusicSound;getMaxDelay()I", at = @At("HEAD"),
-            cancellable = true)
+    @Inject(method = "Lnet/minecraft/sound/MusicSound;getMaxDelay()I", at = @At("HEAD"), cancellable = true)
     private void getMaxDelay(CallbackInfoReturnable<Integer> cir) {
         cir.setReturnValue(this.customMaxDelay);
     }
@@ -50,5 +48,5 @@ public class MusicDelay implements MusicSoundInterface {
     public boolean enabled() {
         return this.enabled;
     }
-    
+
 }

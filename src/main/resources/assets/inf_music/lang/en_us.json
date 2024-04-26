@@ -27,7 +27,7 @@
     "inf_music.config.playImmediately": "Play Immediately",
     "inf_music.config.playImmediately.enabled": "ON",
     "inf_music.config.playImmediately.disabled": "OFF",
-    "inf_music.config.playImmediately.tooltip": "Determines if music will start when you join a world or regardless of custom delay.",
+    "inf_music.config.playImmediately.tooltip": "Determines if music will start when you join a world regardless of the custom delay set.",
     "inf_music.config.delayContext": "Music will play after %s",
     "inf_music.config.delayContext.random": "Music will randomly play between %s and %s",
     "inf_music.config.button": "%s: %s",
