@@ -1,7 +1,7 @@
 {
     "schemaVersion": 1,
     "id": "infinite-music",
-    "version": "0.4.1",
+    "version": "0.4.2",
     "name": "Infinite Music",
     "description": "Removes the delay between music tracks.",
     "authors": ["PlasticStrawActivist"],
@@ -25,7 +25,6 @@
     ],
     "depends": {
         "fabricloader": ">=0.14.19",
-        "minecraft": "1.20.6",
         "java": ">=21"
     },
     "accessWidener": "inf_music.accesswidener",
