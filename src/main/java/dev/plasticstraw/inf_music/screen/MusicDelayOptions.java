@@ -107,9 +107,10 @@ public class MusicDelayOptions extends AbstractOptionsScreen {
     }
 
     @Override
-    protected void initScreen() {
+    protected void initBody() {
+        super.initBody();
         contextTextWidget = addDrawableChild(new MultilineTextWidget(Text.empty(), textRenderer));
-        contextTextWidget.setMaxWidth(optionButtons.getRowWidth() - 50);
+        contextTextWidget.setMaxWidth(body.getRowWidth() - 50);
         contextTextWidget.setCentered(true);
         contextTextWidget.setY(40 + 2 * 24);
         updateContextTextWidget();

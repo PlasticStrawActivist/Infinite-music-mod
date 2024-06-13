@@ -10,10 +10,8 @@ import net.minecraft.text.Text;
 
 public class InfiniteMusicOptions extends AbstractOptionsScreen {
 
-    private static final String TITLE_KEY = "inf_music.config.title";
-
     public InfiniteMusicOptions(Screen parent) {
-        super(parent, TITLE_KEY);
+        super(parent, "inf_music.config.title");
     }
 
     @Override

@@ -10,11 +10,11 @@ import dev.plasticstraw.inf_music.config.InfiniteMusicConfig;
 import dev.plasticstraw.inf_music.config.InfiniteMusicConfig.MusicOptions;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.sound.MusicType;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.client.sound.SoundManager;
 import net.minecraft.sound.MusicSound;
+import net.minecraft.sound.MusicType;
 import net.minecraft.util.math.random.Random;
 
 public class InfiniteMusic implements ClientModInitializer {
