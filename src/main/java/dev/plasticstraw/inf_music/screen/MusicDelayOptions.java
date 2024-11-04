@@ -52,7 +52,7 @@ public class MusicDelayOptions extends AbstractOptionsScreen {
                         delaySlider.getSimpleOption().setValue(0);
                         randomnessSlider.getSimpleOption().setValue(0);
                     }
-                    clearAndInit();
+                    client.setScreen(this);
                 });
 
         disableMusicButton = new BooleanButton(
