@@ -12,6 +12,7 @@ import net.minecraft.text.Text;
 public class MusicDelayOptions extends AbstractOptionsScreen {
 
     private final MusicOptions musicOptions;
+    private final String titleTranslationKey;
     private final int maxIntValue;
     private final int secondsStep;
     private final String valueTranslationKey;
@@ -25,6 +26,7 @@ public class MusicDelayOptions extends AbstractOptionsScreen {
     public MusicDelayOptions(Screen parent, String titleTranslationKey, MusicOptions musicOptions) {
         super(parent, titleTranslationKey);
         this.musicOptions = musicOptions;
+        this.titleTranslationKey = titleTranslationKey;
 
         if (musicOptions.usesMinutes()) {
             maxIntValue = 15;
@@ -52,7 +54,7 @@ public class MusicDelayOptions extends AbstractOptionsScreen {
                         delaySlider.getSimpleOption().setValue(0);
                         randomnessSlider.getSimpleOption().setValue(0);
                     }
-                    client.setScreen(this);
+                    client.setScreen(new MusicDelayOptions(parent, titleTranslationKey, musicOptions));
                 });
 
         disableMusicButton = new BooleanButton(
