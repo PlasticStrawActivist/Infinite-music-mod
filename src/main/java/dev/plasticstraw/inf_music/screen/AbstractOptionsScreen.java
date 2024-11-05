@@ -24,6 +24,7 @@ public abstract class AbstractOptionsScreen extends GameOptionsScreen {
     @Override
     public void close() {
         InfiniteMusic.CONFIG.write();
+        InfiniteMusic.updateMusicDelays();
         super.close();
     }
 
