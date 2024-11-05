@@ -237,10 +237,11 @@ public class InfiniteMusic implements ClientModInitializer {
         }
 
         public boolean isPlayingType(MusicSound musicSound) {
-            if (currentMusicPlaying == null) {
+            if (currentMusicPlaying == null || currentMusicPlaying.getSound() == null) {
                 return false;
             }
-            return musicSound.getSound().value().getId().equals(currentMusicPlaying.getId());
+
+            return musicSound.getSound().matchesId(currentMusicPlaying.getId());
         }
 
         public void hasJoinedWorld() {
