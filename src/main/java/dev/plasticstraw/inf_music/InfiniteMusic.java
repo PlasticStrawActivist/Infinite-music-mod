@@ -16,6 +16,7 @@ import net.minecraft.client.sound.SoundManager;
 import net.minecraft.sound.MusicSound;
 import net.minecraft.sound.MusicType;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.World;
 
 public class InfiniteMusic implements ClientModInitializer {
 
@@ -105,6 +106,10 @@ public class InfiniteMusic implements ClientModInitializer {
         public TickCondition fullTick() {
             MusicSound musicSound = client.getMusicType();
 
+            if (fixForMcBug()) {
+                return new TickCondition(null);
+            }
+
             if (!musicSound.enabled()) { // is music disabled?
                 stop(musicSound);
                 return new TickCondition(musicSound);
@@ -187,9 +192,10 @@ public class InfiniteMusic implements ClientModInitializer {
 
         private class TickCondition {
 
+            @Nullable
             public final MusicSound musicSoundType;
 
-            TickCondition(MusicSound musicSoundType) {
+            TickCondition(@Nullable MusicSound musicSoundType) {
                 this.musicSoundType = musicSoundType;
             }
 
@@ -247,6 +253,20 @@ public class InfiniteMusic implements ClientModInitializer {
 
         private boolean isDiscMusicBlocking() {
             return CONFIG.pauseForDiscMusic && isMusicDiscMusicPlaying();
+        }
+
+        // Fix for World.getBiome() returning "minecraft:plains" when still in the
+        // loading screen. At the moment this functions just checks to see if the player
+        // is not in the overworld and in a plains biome. Should probably come up with a
+        // better solution.
+        private boolean fixForMcBug() {
+            if (client.player != null) {
+                return client.player.getWorld().getRegistryKey() != World.OVERWORLD
+                        && client.player.getWorld().getBiome(client.player.getBlockPos())
+                                .getIdAsString().equals("minecraft:plains");
+            }
+
+            return false;
         }
 
     }
