@@ -26,6 +26,7 @@ public class InfiniteMusic implements ClientModInitializer {
 
     private static final List<MusicSound> gameplayMusic = new ArrayList<MusicSound>();
     public static final List<SoundInstance> musicDiscInstanceList = new ArrayList<SoundInstance>();
+    public static final List<SoundInstance> musicInstanceList = new ArrayList<SoundInstance>();
     public static MinecraftClient client = MinecraftClient.getInstance();
     public static SoundInstance musicInstance;
 
@@ -125,7 +126,7 @@ public class InfiniteMusic implements ClientModInitializer {
                 return new TickCondition(musicSound) {
 
                     public boolean tick() {
-                        if (client.getSoundManager().isPlaying(currentMusicPlaying)) {
+                        if (isPlayingMusic()) {
                             return false;
                         }
 
@@ -219,6 +220,17 @@ public class InfiniteMusic implements ClientModInitializer {
             readyToPlay = false;
             timeSinceLastSong = -1;
             randomFloat = random.nextFloat();
+
+            for (SoundInstance soundInstance : new ArrayList<SoundInstance>(musicInstanceList)) {
+                if (!MinecraftClient.getInstance().getSoundManager().isPlaying(soundInstance)) {
+                    musicInstanceList.remove(soundInstance);
+                }
+            }
+
+            if (musicInstanceList.size() != 0) {
+                return;
+            }
+
             currentMusicPlaying = PositionedSoundInstance.music(type.getSound().value());
             InfiniteMusic.musicInstance = currentMusicPlaying;
             client.getSoundManager().play(currentMusicPlaying);
@@ -243,6 +255,10 @@ public class InfiniteMusic implements ClientModInitializer {
             }
 
             return musicSound.getSound().matchesId(currentMusicPlaying.getId());
+        }
+
+        public boolean isPlayingMusic() {
+            return client.getSoundManager().isPlaying(currentMusicPlaying);
         }
 
         public void hasJoinedWorld() {

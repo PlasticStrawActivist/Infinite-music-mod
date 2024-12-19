@@ -8,14 +8,16 @@ import dev.plasticstraw.inf_music.InfiniteMusic;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.client.sound.SoundManager;
+import net.minecraft.sound.SoundCategory;
 
 @Mixin(SoundManager.class)
 public class ValidateSounds {
 
-    @Inject(method = "Lnet/minecraft/client/sound/SoundManager;play(Lnet/minecraft/client/sound/SoundInstance;)V",
-            at = @At("HEAD"), cancellable = true)
+    @Inject(method = "Lnet/minecraft/client/sound/SoundManager;play(Lnet/minecraft/client/sound/SoundInstance;)V", at = @At("HEAD"), cancellable = true)
     private void validateSounds(SoundInstance soundInstance, CallbackInfo ci) {
-        if (soundInstance.getId().getPath().startsWith("music_disc.")) {
+        if (soundInstance.getCategory() == SoundCategory.MUSIC) {
+            InfiniteMusic.musicInstanceList.add(soundInstance);
+        } else if (soundInstance.getId().getPath().startsWith("music_disc.")) {
             InfiniteMusic.musicDiscInstanceList.add(soundInstance);
 
             if (InfiniteMusic.CONFIG.pauseForDiscMusic) {
