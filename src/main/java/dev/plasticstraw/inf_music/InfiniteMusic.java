@@ -26,11 +26,12 @@ public class InfiniteMusic implements ClientModInitializer {
 
     private static final List<MusicSound> gameplayMusic = new ArrayList<MusicSound>();
     public static final List<SoundInstance> musicDiscInstanceList = new ArrayList<SoundInstance>();
-    public static final MinecraftClient client = MinecraftClient.getInstance();
+    public static MinecraftClient client = MinecraftClient.getInstance();
     public static SoundInstance musicInstance;
 
     @Override
     public void onInitializeClient() {
+        client = MinecraftClient.getInstance();
         updateMusicDelay(MusicType.MENU, CONFIG.mainMenuMusic);
     }
 
